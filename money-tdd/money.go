@@ -1,30 +1,33 @@
 package money
 
-type Money interface {
-	Times(m int) Money
-	Equals(d Money) bool
-	Amount() int
+type Money struct {
+	amount   int
+	currency string
 }
 
-type Dollar struct {
-	amount int
+func NewDollar(amount int) Money {
+	return Money{amount: amount, currency: "USD"}
 }
 
-func NewDollar (amount int) Dollar {
-	return Dollar{amount: amount}
+func NewFranc(amount int) Money {
+	return Money{amount: amount, currency: "CHF"}
 }
 
-func (d Dollar) Times (m int) Money  {
-	return NewDollar(d.Amount() * m)
+func (d Money) Amount() int {
+	return d.amount
 }
 
-func (d Dollar) Equals (d2 Money) bool {
-	if d.Amount() == d2.Amount() {
+func (d Money) Currency() string {
+	return d.currency
+}
+
+func (d Money) Times(m int) Money {
+	return Money{d.Amount() * m, d.Currency()}
+}
+
+func (d Money) Equals(d2 Money) bool {
+	if d.Amount() == d2.Amount() && d.Currency() == d2.Currency() {
 		return true
 	}
 	return false
-}
-
-func (d Dollar) Amount () int {
-	return d.amount
 }

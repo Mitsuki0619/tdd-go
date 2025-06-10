@@ -1,10 +1,19 @@
 package money
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
-func assertEqual(t *testing.T, got, want Money) {
-	if got.Amount() != want.Amount() {
-		t.Errorf("got %d want %d", got.Amount(), want.Amount())
+func assertEqualsPrimitive[T comparable](t *testing.T, expected, actual T) {
+	if expected != actual {
+		t.Errorf("Assertion failed: Expected %v, but got %v", expected, actual)
+	}
+}
+
+func assertEquals(t *testing.T, expected, actual interface{}) {
+	if !reflect.DeepEqual(expected, actual) {
+		t.Errorf("Assertion failed (DeepEqual): Expected %v, but got %v", expected, actual)
 	}
 }
 
