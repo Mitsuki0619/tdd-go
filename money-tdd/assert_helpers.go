@@ -6,24 +6,28 @@ import (
 )
 
 func assertEqualsPrimitive[T comparable](t *testing.T, expected, actual T) {
+	t.Helper()
 	if expected != actual {
 		t.Errorf("Assertion failed: Expected %v, but got %v", expected, actual)
 	}
 }
 
 func assertEquals(t *testing.T, expected, actual interface{}) {
+	t.Helper()
 	if !reflect.DeepEqual(expected, actual) {
 		t.Errorf("Assertion failed (DeepEqual): Expected %v, but got %v", expected, actual)
 	}
 }
 
 func assertTrue(t *testing.T, b bool) {
+	t.Helper()
 	if !b {
 		t.Errorf("it is false")
 	}
 }
 
 func assertFalse(t *testing.T, b bool) {
+	t.Helper()
 	if b {
 		t.Errorf("it is true")
 	}
