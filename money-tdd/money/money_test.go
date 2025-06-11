@@ -1,8 +1,8 @@
 package money
 
 import (
+	testHelper "money-tdd/test_helper"
 	"testing"
-	"github.com/Mitsuki0619/tdd-go/money-tdd/test_helper"
 )
 
 func TestMultiplication(t *testing.T) {
