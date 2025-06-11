@@ -21,12 +21,20 @@ func (d Money) Currency() string {
 	return d.currency
 }
 
+func (d Money) Reduce() Money {
+	return d
+}
+
+func (d Money) Plus(addend Money) Expression {
+	return Sum{augend: d.amount, addend: addend.amount}
+}
+
 func (d Money) Times(m int) Money {
 	return Money{d.Amount() * m, d.Currency()}
 }
 
 func (d Money) Equals(d2 Money) bool {
-	if d.Amount() == d2.Amount() && d.Currency() == d2.Currency() {
+	if d.amount == d2.amount && d.Currency() == d2.Currency() {
 		return true
 	}
 	return false
