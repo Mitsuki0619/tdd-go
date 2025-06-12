@@ -13,28 +13,29 @@ func NewFranc(amount int) Money {
 	return Money{amount: amount, currency: "CHF"}
 }
 
-func (d Money) Amount() int {
-	return d.amount
+func (m Money) Amount() int {
+	return m.amount
 }
 
-func (d Money) Currency() string {
-	return d.currency
+func (m Money) Currency() string {
+	return m.currency
 }
 
-func (d Money) Reduce() Money {
-	return d
+func (m Money) Reduce(bank Bank, to string) Money {
+	rate := bank.Rate(m.currency, to)
+	return Money{m.amount / rate, to}
 }
 
-func (d Money) Plus(addend Money) Expression {
-	return Sum{augend: d.amount, addend: addend.amount}
+func (m Money) Plus(addend Money) Expression {
+	return Sum{augend: m.amount, addend: addend.amount}
 }
 
-func (d Money) Times(m int) Money {
-	return Money{d.Amount() * m, d.Currency()}
+func (m Money) Times(multiplier int) Money {
+	return Money{m.Amount() * multiplier, m.Currency()}
 }
 
-func (d Money) Equals(d2 Money) bool {
-	if d.amount == d2.amount && d.Currency() == d2.Currency() {
+func (m Money) Equals(d2 Money) bool {
+	if m.amount == d2.amount && m.Currency() == d2.Currency() {
 		return true
 	}
 	return false
