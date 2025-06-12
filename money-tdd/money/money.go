@@ -26,11 +26,11 @@ func (m Money) Reduce(bank Bank, to string) Money {
 	return Money{m.amount / rate, to}
 }
 
-func (m Money) Plus(addend Money) Expression {
-	return Sum{augend: m.amount, addend: addend.amount}
+func (m Money) Plus(addend Expression) Expression {
+	return NewSum(m, addend)
 }
 
-func (m Money) Times(multiplier int) Money {
+func (m Money) Times(multiplier int) Expression {
 	return Money{m.Amount() * multiplier, m.Currency()}
 }
 

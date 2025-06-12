@@ -31,7 +31,7 @@ func TestSimpleAddition(t *testing.T) {
 }
 
 func TestReduceSum(t *testing.T) {
-	sum := Sum{augend: 4, addend: 6}
+	sum := NewSum(NewDollar(4), NewDollar(6))
 	bank := NewBank()
 	result := bank.Reduce(sum, "USD")
 	testHelper.AssertEquals(t, result, NewDollar(10))
@@ -46,4 +46,33 @@ func TestReduceMoneyDifferentCurrency(t *testing.T) {
 
 func TestIdentityRate(t *testing.T) {
 	testHelper.AssertEquals(t, 1, NewBank().Rate("USD", "USD"))
+}
+
+func TestMixedAddition(t *testing.T) {
+	fiveBucks := NewDollar(5)
+	tenFrancs := NewFranc(10)
+	bank := NewBank()
+	bank.AddRate("CHF", "USD", 2)
+	result := bank.Reduce(fiveBucks.Plus(tenFrancs), "USD")
+	testHelper.AssertEquals(t, NewDollar(10), result)
+}
+
+func TestSumPlusMoney(t *testing.T) {
+	fiveBucks := NewDollar(5)
+	tenFrancs := NewFranc(10)
+	bank := NewBank()
+	bank.AddRate("CHF", "USD", 2)
+	sum := NewSum(fiveBucks, tenFrancs).Plus(fiveBucks)
+	result := bank.Reduce(sum, "USD")
+	testHelper.AssertEquals(t, NewDollar(15), result)
+}
+
+func TestSumTimes(t *testing.T) {
+	fiveBucks := NewDollar(5)
+	tenFrancs := NewFranc(10)
+	bank := NewBank()
+	bank.AddRate("CHF", "USD", 2)
+	sum := NewSum(fiveBucks, tenFrancs).Times(2)
+	result := bank.Reduce(sum, "USD")
+	testHelper.AssertEquals(t, NewDollar(20), result)
 }
